@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch vụ - FORMAN Cắt tóc nam</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Nav Bar -->
+    <div class="nav-bar">
+        <div class="nav-bar_left">
+            <div class="nav-bar_logo">FORMAN</div>
+        </div>
+        <div class="nav-bar_right">
+            <button class="hamburger-menu" id="hamburgerMenu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-bar_menu" id="navMenu">
+                <a href="index.html">Trang chủ</a>
+                <a href="service.html" class="active">Dịch vụ</a>
+                <a href="promotion.html">Khuyến mãi</a>
+                <a href="about.html">Về chúng tôi</a>
+                <div class="form_button">
+                    <button class="btn-action"><a href="login.html">Đăng nhập</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>Dịch vụ của FORMAN</h1>
+        <p>Chuyên cắt tóc nam - Uốn - Nhuộm - Chăm sóc tóc cao cấp</p>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-container">
+            <button class="filter-btn active" data-type="all">Tất cả dịch vụ</button>
+        </div>
+    </div>
+
+    <section class="services-section">
+        <div class="services-grid" id="servicesGrid">
+            <div id="loading" style="grid-column:1/-1;text-align:center;padding:80px;font-size:18px;">
+                Đang tải danh sách dịch vụ...
+            </div>
+        </div>
+    </section>
+
+    <button id="backToTop" class="back-to-top">↑</button>
+    <a href="tel:1900272703" class="call-button">☎</a>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="footer-title">Về chúng tôi</div>
+                <ul class="footer-list">
+                    <li><a href="#">Giới thiệu về FORMAN</a></li>
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Tìm FORMAN gần nhất</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <div class="footer-title">Liên hệ</div>
+                <ul class="footer-list">
+                    <li class="contact-info">
+                        <span class="label">Hotline:</span>
+                        <a href="tel:1900272703">1900.27.27.03</a>
+                    </li>
+                    <li class="contact-info">
+                        <span class="label">Email:</span>
+                        <a href="mailto:formanvn@gmail.com">formanvn@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'https://webdatlichlamtoc.id.vn';
+
+        async function fetchAPI(endpoint) {
+            try {
+                const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!res.ok) throw new Error('Lỗi server');
+                return await res.json();
+            } catch (error) {
+                console.error(error);
+                return null;
+            }
+        }
+
+        function renderServices(services) {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
+
+            services.forEach(service => {
+                // Hiện tại chưa có URL ảnh → dùng ảnh mặc định theo thứ tự
+                const defaultImages = [
+                    "image/b1.jpg",
+                    "image/b2.jpg",
+                    "image/b4.jpg",
+                    "image/b5.jpg",
+                    "image/b6.jpg"
+                ];
+                const imageSrc = defaultImages[services.indexOf(service) % defaultImages.length];
+
+                const html = `
+                    <div class="service-card">
+                        <img src="${imageSrc}" alt="${service.tendichvu}">
+                        <div class="service-info">
+                            <h3>${service.tendichvu}</h3>
+                            <p class="service-desc">${service.mota || 'Đang cập nhật mô tả...'}</p>
+                            <p class="service-price">${Number(service.dongia).toLocaleString('vi-VN')} VND</p>
+                            <button class="btn-action" onclick="datLich('${service.id}')">Đặt lịch ngay</button>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        window.datLich = function(id) {
+            alert(`Đã chọn dịch vụ: ${id}\n\nTính năng đặt lịch sẽ được làm sau.`);
+        };
+
+        // Khởi tạo
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Hamburger Menu
+            const hamburger = document.getElementById('hamburgerMenu');
+            const navMenu = document.getElementById('navMenu');
+            if (hamburger && navMenu) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navMenu.classList.toggle('show');
+                });
+            }
+
+            // Back to Top
+            const backToTopBtn = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                backToTopBtn.classList.toggle('show', window.scrollY > 300);
+            });
+            if (backToTopBtn) {
+                backToTopBtn.addEventListener('click', () => {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            }
+
+            // Gọi API lấy dịch vụ
+            const result = await fetchAPI('/api/services');
+            document.getElementById('loading').style.display = 'none';
+
+            if (result && result.status === true && result.data) {
+                renderServices(result.data);
+            } else {
+                document.getElementById('servicesGrid').innerHTML = `
+                    <p style="grid-column:1/-1;text-align:center;padding:60px;color:#d32f2f;">
+                        Không thể tải dữ liệu dịch vụ từ server.
+                    </p>`;
+            }
+        });
+    </script>
+</body>
+</html>
