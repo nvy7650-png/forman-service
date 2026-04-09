@@ -66,16 +66,16 @@
         async function loadServices() {
             const loading = document.getElementById('loading');
             const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
 
             try {
                 const res = await fetch(`${API_BASE_URL}/api/services`);
                 const result = await res.json();
 
-                loading.style.display = 'none';
-
-                if (!result.status || !result.data) return;
-
-                grid.innerHTML = '';
+                if (!result.status || !result.data) {
+                    loading.innerHTML = "Không có dữ liệu dịch vụ";
+                    return;
+                }
 
                 for (const service of result.data) {
                     const phuongtiens = await getPhuongTien(service.id);
@@ -109,7 +109,7 @@
                     grid.insertAdjacentHTML('beforeend', html);
                 }
             } catch (err) {
-                loading.innerHTML = `<span style="color:red;">Không kết nối được với server</span>`;
+                loading.innerHTML = `<span style="color:red;">Lỗi kết nối server</span>`;
             }
         }
 
@@ -117,13 +117,7 @@
             alert(`Đã chọn dịch vụ ID: ${id}`);
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            loadServices();
-
-            const ham = document.getElementById('hamburgerMenu');
-            const menu = document.getElementById('navMenu');
-            if (ham) ham.addEventListener('click', () => menu.classList.toggle('show'));
-        });
+        document.addEventListener('DOMContentLoaded', loadServices);
     </script>
 </body>
 </html>
