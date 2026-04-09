@@ -8,6 +8,7 @@
 </head>
 <body>
 
+    <!-- Nav Bar -->
     <div class="nav-bar">
         <div class="nav-bar_left">
             <div class="nav-bar_logo">FORMAN</div>
@@ -17,7 +18,7 @@
                 <span></span><span></span><span></span>
             </button>
             <div class="nav-bar_menu" id="navMenu">
-                <a href="#">Trang chủ</a>
+                <a href="https://datlichlamtoc.id.vn/index.html">Trang chủ</a>
                 <a href="#" class="active">Dịch vụ</a>
                 <a href="#">Khuyến mãi</a>
                 <a href="#">Về chúng tôi</a>
@@ -79,12 +80,7 @@
                 for (const service of result.data) {
                     const phuongtiens = await getPhuongTien(service.id);
 
-                    // ===================== PHẦN MEDIA ĐÃ SỬA =====================
-                    let mediaHTML = `
-                        <div class="media-wrapper">
-                            <img src="image/b1.jpg" alt="${service.tendichvu}">
-                        </div>
-                    `;
+                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
 
                     if (phuongtiens.length > 0) {
                         phuongtiens.sort((a, b) => (a.thutu || 999) - (b.thutu || 999));
@@ -92,17 +88,9 @@
 
                         if (first.link) {
                             if (first.loai === "VIDEO") {
-                                mediaHTML = `
-                                    <div class="media-wrapper">
-                                        <video src="${first.link}" controls></video>
-                                    </div>
-                                `;
+                                mediaHTML = `<video src="${first.link}" controls style="width:100%; height:260px; object-fit:cover;"></video>`;
                             } else {
-                                mediaHTML = `
-                                    <div class="media-wrapper">
-                                        <img src="${first.link}" alt="${service.tendichvu}">
-                                    </div>
-                                `;
+                                mediaHTML = `<img src="${first.link}" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
                             }
                         }
                     }
