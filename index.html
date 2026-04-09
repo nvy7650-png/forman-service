@@ -8,7 +8,6 @@
 </head>
 <body>
 
-    <!-- Nav Bar -->
     <div class="nav-bar">
         <div class="nav-bar_left">
             <div class="nav-bar_logo">FORMAN</div>
@@ -18,12 +17,12 @@
                 <span></span><span></span><span></span>
             </button>
             <div class="nav-bar_menu" id="navMenu">
-                <a href="index.html">Trang chủ</a>
-                <a href="service.html" class="active">Dịch vụ</a>
-                <a href="promotion.html">Khuyến mãi</a>
-                <a href="about.html">Về chúng tôi</a>
+                <a href="#">Trang chủ</a>
+                <a href="#" class="active">Dịch vụ</a>
+                <a href="#">Khuyến mãi</a>
+                <a href="#">Về chúng tôi</a>
                 <div class="form_button">
-                    <button class="btn-action"><a href="login.html">Đăng nhập</a></button>
+                    <button class="btn-action">Đăng nhập</button>
                 </div>
             </div>
         </div>
@@ -36,132 +35,105 @@
 
     <div class="filter-section">
         <div class="filter-container">
-            <button class="filter-btn active" data-type="all">Tất cả dịch vụ</button>
+            <button class="filter-btn active">Tất cả dịch vụ</button>
         </div>
     </div>
 
     <section class="services-section">
         <div class="services-grid" id="servicesGrid">
-            <div id="loading" style="grid-column:1/-1;text-align:center;padding:80px;font-size:18px;">
-                Đang tải danh sách dịch vụ...
-            </div>
+            <div id="loading">Đang tải dịch vụ và hình ảnh...</div>
         </div>
     </section>
 
     <button id="backToTop" class="back-to-top">↑</button>
     <a href="tel:1900272703" class="call-button">☎</a>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <div class="footer-title">Về chúng tôi</div>
-                <ul class="footer-list">
-                    <li><a href="#">Giới thiệu về FORMAN</a></li>
-                    <li><a href="#">Tin tức</a></li>
-                    <li><a href="#">Tìm FORMAN gần nhất</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <div class="footer-title">Liên hệ</div>
-                <ul class="footer-list">
-                    <li class="contact-info">
-                        <span class="label">Hotline:</span>
-                        <a href="tel:1900272703">1900.27.27.03</a>
-                    </li>
-                    <li class="contact-info">
-                        <span class="label">Email:</span>
-                        <a href="mailto:formanvn@gmail.com">formanvn@gmail.com</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        const API_BASE_URL = 'https://webdatlichlamtoc.id.vn';
+        const API_BASE_URL = "https://webdatlichlamtoc.id.vn";
 
-        async function fetchAPI(endpoint) {
+        // Hàm lấy danh sách phương tiện (ảnh/video) của một dịch vụ
+        async function getPhuongTien(id_dich_vu) {
             try {
-                const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
-                if (!res.ok) throw new Error('Lỗi server');
-                return await res.json();
-            } catch (error) {
-                console.error(error);
-                return null;
+                const res = await fetch(`${API_BASE_URL}/api/phuong-tiens/${id_dich_vu}`);
+                if (!res.ok) return [];
+                const data = await res.json();
+                return data.data || data || [];
+            } catch (e) {
+                console.error("Lỗi lấy phương tiện:", e);
+                return [];
             }
         }
 
-        function renderServices(services) {
+        async function loadServices() {
+            const loading = document.getElementById('loading');
             const grid = document.getElementById('servicesGrid');
-            grid.innerHTML = '';
 
-            services.forEach(service => {
-                // Hiện tại chưa có URL ảnh → dùng ảnh mặc định theo thứ tự
-                const defaultImages = [
-                    "image/b1.jpg",
-                    "image/b2.jpg",
-                    "image/b4.jpg",
-                    "image/b5.jpg",
-                    "image/b6.jpg"
-                ];
-                const imageSrc = defaultImages[services.indexOf(service) % defaultImages.length];
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/services`);
+                const result = await res.json();
 
-                const html = `
-                    <div class="service-card">
-                        <img src="${imageSrc}" alt="${service.tendichvu}">
-                        <div class="service-info">
-                            <h3>${service.tendichvu}</h3>
-                            <p class="service-desc">${service.mota || 'Đang cập nhật mô tả...'}</p>
-                            <p class="service-price">${Number(service.dongia).toLocaleString('vi-VN')} VND</p>
-                            <button class="btn-action" onclick="datLich('${service.id}')">Đặt lịch ngay</button>
+                loading.style.display = 'none';
+
+                if (!result.status || !result.data) {
+                    grid.innerHTML = `<p style="color:red;text-align:center;padding:40px;">Không tải được danh sách dịch vụ</p>`;
+                    return;
+                }
+
+                grid.innerHTML = '';
+
+                for (const service of result.data) {
+                    // Lấy ảnh/video của dịch vụ này
+                    const phuongtiens = await getPhuongTien(service.id);
+
+                    // Lấy ảnh đầu tiên theo thứ tự thutu
+                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%;height:230px;object-fit:cover;">`;
+                    
+                    if (phuongtiens.length > 0) {
+                        // Sắp xếp theo thutu
+                        phuongtiens.sort((a, b) => (a.thutu || 999) - (b.thutu || 999));
+                        
+                        const firstMedia = phuongtiens[0];
+                        
+                        if (firstMedia.loai === 'video' && firstMedia.url) {
+                            mediaHTML = `<video src="${firstMedia.url}" controls style="width:100%;height:230px;object-fit:cover;"></video>`;
+                        } else if (firstMedia.url) {
+                            mediaHTML = `<img src="${firstMedia.url}" alt="${service.tendichvu}" style="width:100%;height:230px;object-fit:cover;">`;
+                        }
+                    }
+
+                    const cardHTML = `
+                        <div class="service-card">
+                            ${mediaHTML}
+                            <div class="service-info">
+                                <h3>${service.tendichvu}</h3>
+                                <p class="service-desc">${service.mota || 'Đang cập nhật mô tả...'}</p>
+                                <p class="service-price">${Number(service.dongia).toLocaleString('vi-VN')} VND</p>
+                                <button class="btn-action" onclick="datLich('${service.id}')">Đặt lịch ngay</button>
+                            </div>
                         </div>
-                    </div>
-                `;
-                grid.insertAdjacentHTML('beforeend', html);
-            });
+                    `;
+                    grid.insertAdjacentHTML('beforeend', cardHTML);
+                }
+
+            } catch (error) {
+                console.error(error);
+                loading.innerHTML = `<span style="color:red;">Không kết nối được với server</span>`;
+            }
         }
 
         window.datLich = function(id) {
-            alert(`Đã chọn dịch vụ: ${id}\n\nTính năng đặt lịch sẽ được làm sau.`);
+            alert(`Đã chọn dịch vụ ID: ${id}\nTính năng đặt lịch đang phát triển.`);
         };
 
-        // Khởi tạo
-        document.addEventListener('DOMContentLoaded', async () => {
+        // Khởi chạy
+        document.addEventListener('DOMContentLoaded', () => {
+            loadServices();
+
             // Hamburger Menu
             const hamburger = document.getElementById('hamburgerMenu');
             const navMenu = document.getElementById('navMenu');
             if (hamburger && navMenu) {
-                hamburger.addEventListener('click', () => {
-                    hamburger.classList.toggle('active');
-                    navMenu.classList.toggle('show');
-                });
-            }
-
-            // Back to Top
-            const backToTopBtn = document.getElementById('backToTop');
-            window.addEventListener('scroll', () => {
-                backToTopBtn.classList.toggle('show', window.scrollY > 300);
-            });
-            if (backToTopBtn) {
-                backToTopBtn.addEventListener('click', () => {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            }
-
-            // Gọi API lấy dịch vụ
-            const result = await fetchAPI('/api/services');
-            document.getElementById('loading').style.display = 'none';
-
-            if (result && result.status === true && result.data) {
-                renderServices(result.data);
-            } else {
-                document.getElementById('servicesGrid').innerHTML = `
-                    <p style="grid-column:1/-1;text-align:center;padding:60px;color:#d32f2f;">
-                        Không thể tải dữ liệu dịch vụ từ server.
-                    </p>`;
+                hamburger.addEventListener('click', () => navMenu.classList.toggle('show'));
             }
         });
     </script>
