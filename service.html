@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch vụ - FORMAN Cắt tóc nam</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="nav-bar">
+        <div class="nav-bar_left">
+            <div class="nav-bar_logo">FORMAN</div>
+        </div>
+        <div class="nav-bar_right">
+            <button class="hamburger-menu" id="hamburgerMenu">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-bar_menu" id="navMenu">
+                <a href="index.html">Trang chủ</a>
+                <a href="index.html" class="active">Dịch vụ</a>
+                <a href="#">Khuyến mãi</a>
+                <a href="#">Về chúng tôi</a>
+                <div class="form_button">
+                    <button class="btn-action"><a href="#">Đăng nhập</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <h1>Dịch vụ của FORMAN</h1>
+        <p>Chuyên cắt tóc nam - Uốn - Nhuộm - Chăm sóc tóc cao cấp</p>
+    </div>
+
+    <div class="filter-section">
+        <div class="filter-container">
+            <button class="filter-btn active" data-type="all">Tất cả dịch vụ</button>
+        </div>
+    </div>
+
+    <section class="services-section">
+        <div class="services-grid" id="servicesGrid">
+            <div id="loading">Đang tải dịch vụ từ server...</div>
+        </div>
+    </section>
+
+    <button id="backToTop" class="back-to-top">↑</button>
+    <a href="tel:1900272703" class="call-button">☎</a>
+
+    <script>
+        const API_BASE_URL = "https://webdatlichlamtoc.id.vn";
+
+        async function loadServices() {
+            const loading = document.getElementById('loading');
+            const grid = document.getElementById('servicesGrid');
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/services`);
+                const result = await res.json();
+
+                loading.style.display = 'none';
+
+                if (result.status && result.data) {
+                    grid.innerHTML = '';
+                    result.data.forEach(service => {
+                        const html = `
+                            <div class="service-card">
+                                <img src="image/b1.jpg" alt="${service.tendichvu}">
+                                <div class="service-info">
+                                    <h3>${service.tendichvu}</h3>
+                                    <p class="service-desc">${service.mota || 'Đang cập nhật...'}</p>
+                                    <p class="service-price">${Number(service.dongia).toLocaleString('vi-VN')} VND</p>
+                                    <button class="btn-action">Đặt lịch ngay</button>
+                                </div>
+                            </div>
+                        `;
+                        grid.insertAdjacentHTML('beforeend', html);
+                    });
+                }
+            } catch (err) {
+                loading.innerHTML = "Không kết nối được với server. Vui lòng thử lại sau.";
+                console.error(err);
+            }
+        }
+
+        // Hamburger + Back to Top
+        document.addEventListener('DOMContentLoaded', () => {
+            loadServices();
+
+            const ham = document.getElementById('hamburgerMenu');
+            const menu = document.getElementById('navMenu');
+            if (ham) ham.addEventListener('click', () => menu.classList.toggle('show'));
+        });
+    </script>
+</body>
+</html>
