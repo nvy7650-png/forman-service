@@ -1,3 +1,4 @@
+/* ===================== RESET & BODY ===================== */
 * {
     margin: 0;
     padding: 0;
@@ -56,6 +57,7 @@ body {
     border-radius: 8px;
     font-size: 15px;
     cursor: pointer;
+    transition: background 0.3s;
 }
 
 .btn-action:hover {
@@ -97,7 +99,7 @@ body {
     opacity: 0.95;
 }
 
-/* ===================== SERVICES GRID ===================== */
+/* ===================== SERVICES SECTION ===================== */
 .services-section {
     max-width: 1200px;
     margin: 40px auto;
@@ -127,17 +129,27 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* ===================== ẢNH GIỮ NGUYÊN TỶ LỆ GỐC ===================== */
+/* ===================== MEDIA (ẢNH & VIDEO) - PHẦN ĐÃ CHỈNH ===================== */
+.service-card .media-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;           /* Thay đổi tỷ lệ ở đây nếu cần: 1/1, 4/3, 16/10... */
+    background: #f8f9fa;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .service-card img,
 .service-card video {
     width: 100%;
-    height: auto;           /* Quan trọng: giữ nguyên tỷ lệ gốc */
-    max-height: 320px;      /* Giới hạn chiều cao tối đa để không quá dài */
-    object-fit: contain;    /* Giữ nguyên tỷ lệ, không bị cắt */
-    background: #f8f9fa;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
     display: block;
 }
 
+/* ===================== SERVICE INFO ===================== */
 .service-info {
     padding: 20px;
     flex: 1;
@@ -175,13 +187,14 @@ body {
     font-size: 16px;
     cursor: pointer;
     margin-top: auto;
+    transition: background 0.3s;
 }
 
 .btn-action:hover {
     background: #0097a7;
 }
 
-/* ===================== BACK TO TOP & CALL ===================== */
+/* ===================== FIXED BUTTONS ===================== */
 .back-to-top {
     position: fixed;
     bottom: 90px;
@@ -224,16 +237,11 @@ body {
     z-index: 98;
 }
 
-/* Responsive */
+/* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
     .services-grid {
         grid-template-columns: 1fr;
         gap: 20px;
-    }
-    
-    .service-card img,
-    .service-card video {
-        max-height: 280px;
     }
 }
 
