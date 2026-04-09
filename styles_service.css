@@ -62,7 +62,7 @@ body {
     background: #0097a7;
 }
 
-/* Hamburger Menu */
+/* Hamburger */
 .hamburger-menu {
     display: none;
     flex-direction: column;
@@ -106,10 +106,11 @@ body {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 30px;
 }
 
+/* ===================== CARD - ẢNH CHỮ NHẬT DỌC ===================== */
 .service-card {
     background: white;
     border-radius: 16px;
@@ -123,13 +124,14 @@ body {
 
 .service-card:hover {
     transform: translateY(-12px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15);
 }
 
+/* Ảnh chữ nhật dọc - cao hơn */
 .service-card img,
 .service-card video {
     width: 100%;
-    height: 260px;
+    height: 320px;           /* ← Tăng chiều cao ảnh */
     object-fit: cover;
     display: block;
 }
@@ -143,7 +145,7 @@ body {
 
 .service-info h3 {
     color: #0e3a80;
-    font-size: 20px;
+    font-size: 19px;
     margin-bottom: 8px;
 }
 
@@ -162,22 +164,22 @@ body {
 }
 
 .btn-action {
+    width: 100%;
+    padding: 13px;
     background: #00bcd4;
     color: white;
     border: none;
-    padding: 12px 20px;
     border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
     margin-top: auto;
-    transition: 0.3s;
 }
 
 .btn-action:hover {
     background: #0097a7;
 }
 
-/* ===================== BACK TO TOP & CALL BUTTON ===================== */
+/* ===================== BACK TO TOP & CALL ===================== */
 .back-to-top {
     position: fixed;
     bottom: 90px;
@@ -229,7 +231,7 @@ body {
     
     .service-card img,
     .service-card video {
-        height: 220px;
+        height: 260px;
     }
 }
 
@@ -237,57 +239,9 @@ body {
     .page-header h1 {
         font-size: 26px;
     }
-}
-
-.service-card {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.service-card img,
-.service-card video {
-    width: 100%;
-    height: 260px;
-    object-fit: cover;
-    display: block;
-}
-
-.service-info {
-    padding: 20px;
-}
-
-.service-info h3 {
-    color: #0e3a80;
-    font-size: 19px;
-    margin-bottom: 8px;
-}
-
-.service-price {
-    font-size: 22px;
-    font-weight: 700;
-    color: #00bcd4;
-    margin: 10px 0 15px 0;
-}
-
-.btn-action {
-    width: 100%;
-    padding: 12px;
-    background: #00bcd4;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.btn-action:hover {
-    background: #0097a7;
+    
+    .service-card img,
+    .service-card video {
+        height: 240px;
+    }
 }
