@@ -1,4 +1,3 @@
-/* ===================== RESET & BODY ===================== */
 * {
     margin: 0;
     padding: 0;
@@ -17,18 +16,32 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
-    padding: 15px 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
     position: sticky;
-    top: 0;
+    top: 10px;
     z-index: 1000;
 }
 
+.nav-bar_left {
+    display: flex;
+    align-items: center;
+}
+
 .nav-bar_logo {
-    font-size: 28px;
+    font-size: 23pt;
     font-weight: bold;
     color: #0e3a80;
+    margin-left: 150px;
+}
+
+.nav-bar_right {
+    display: flex;
+    align-items: center;
+    margin-right: 150px;
 }
 
 .nav-bar_menu {
@@ -38,13 +51,13 @@ body {
 }
 
 .nav-bar_menu a {
+    font-size: 15pt;
     text-decoration: none;
     color: #333;
-    font-size: 16px;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
-.nav-bar_menu a.active,
 .nav-bar_menu a:hover {
     color: #00bcd4;
 }
@@ -64,224 +77,390 @@ body {
     background: #0097a7;
 }
 
-/* Hamburger Menu */
 .hamburger-menu {
     display: none;
     flex-direction: column;
     background: none;
     border: none;
     cursor: pointer;
+    padding: 5px;
 }
 
 .hamburger-menu span {
     width: 25px;
     height: 3px;
     background: #333;
-    margin: 4px 0;
+    margin: 5px 0;
     border-radius: 3px;
+    transition: all 0.3s ease;
 }
 
-/* ===================== PAGE HEADER ===================== */
-.page-header {
+.hamburger-menu.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* ===================== SLIDER ===================== */
+.slider {
+    width: 100%;
+    height: 420px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.slider img {
+    position: absolute;
+    width: 82%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    animation: fade 9s infinite;
+}
+
+.slider img:nth-child(1) { animation-delay: 0s; }
+.slider img:nth-child(2) { animation-delay: 3s; }
+.slider img:nth-child(3) { animation-delay: 6s; }
+
+@keyframes fade {
+    0%   { opacity: 0; }
+    10%  { opacity: 1; }
+    33%  { opacity: 1; }
+    43%  { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* ===================== FORM ĐẶT LỊCH ===================== */
+.home_form {
+    background: #0e0e0f;
+    max-width: 766px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 30px 25px;
+    margin: 0 auto 50px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
     text-align: center;
-    padding: 50px 20px 30px;
-    background: linear-gradient(135deg, #0e3a80, #00bcd4);
+}
+
+.content-center h2 {
     color: white;
+    font-size: 24px;
+    margin-bottom: 8px;
 }
 
-.page-header h1 {
-    font-size: 32px;
-    margin-bottom: 10px;
+.slogan {
+    color: #cfcfcf;
+    font-size: 14.5px;
+    margin-bottom: 25px;
 }
 
-.page-header p {
-    font-size: 18px;
-    opacity: 0.95;
+.form_input {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-/* ===================== FILTER SECTION (TẤT CẢ DỊCH VỤ) ===================== */
-.filter-section {
-    background: white;
-    padding: 20px 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 10px;
-}
-
-.filter-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    text-align: center;
-}
-
-.filter-btn {
-    background: #f1f1f1;
-    color: #555;
+.form_input input {
+    flex: 1;
+    min-width: 280px;
+    padding: 14px 16px;
+    border-radius: 8px;
     border: none;
-    padding: 10px 24px;
-    margin: 0 8px;
-    border-radius: 30px;
+    background: #1c1c1e;
+    color: white;
     font-size: 15px;
+}
+
+.form_input input::placeholder {
+    color: #aaaaaa;
+}
+
+/* ===================== CAROUSEL ===================== */
+.carousel-section {
+    margin: 60px auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+.carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.carousel-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0e3a80;
+    border-left: 5px solid #00bcd4;
+    padding-left: 15px;
+}
+
+.view-more {
+    color: #00bcd4;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.view-more:hover {
+    color: #0097a7;
+}
+
+.carousel-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    background: #0e3a80;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 22px;
     cursor: pointer;
+    z-index: 10;
     transition: all 0.3s;
 }
 
-.filter-btn.active,
-.filter-btn:hover {
+.carousel-btn:hover {
     background: #00bcd4;
-    color: white;
+    transform: translateY(-50%) scale(1.08);
 }
 
-/* ===================== SERVICES SECTION ===================== */
-.services-section {
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 0 20px;
-}
+.carousel-btn-prev { left: -10px; }
+.carousel-btn-next { right: -10px; }
 
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-    gap: 30px;
-}
-
-/* ===================== SERVICE CARD ===================== */
-.service-card {
-    background: white;
-    border-radius: 16px;
+.carousel-wrapper {
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    margin: 0 60px;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 20px;
+    transition: transform 0.5s ease;
+}
+
+.carousel-item {
+    flex: 0 0 calc(25% - 15px);
+    min-width: 220px;
+}
+
+.carousel-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.4s ease;
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+.carousel-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* ===================== MEDIA WRAPPER ===================== */
-.service-card .media-wrapper {
+.carousel-card img {
     width: 100%;
-    aspect-ratio: 16 / 9;           /* Bạn có thể đổi thành 4/3 hoặc 1/1 nếu muốn */
-    background: #f8f9fa;
-    overflow: hidden;
-    position: relative;
+    height: 185px;
+    object-fit: cover;
 }
 
-.service-card img,
-.service-card video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;              /* Thay đổi thành cover để đẹp và đầy khung */
-    object-position: center;
-    display: block;
-}
-
-/* ===================== SERVICE INFO ===================== */
-.service-info {
-    padding: 24px 20px;
+.carousel-card-content {
+    padding: 16px;
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.service-info h3 {
+.carousel-card h4 {
+    font-size: 15.5px;
     color: #0e3a80;
-    font-size: 19px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
 }
 
-.service-desc {
-    color: #666;
-    font-size: 14.8px;
-    margin-bottom: 16px;
-    flex: 1;
-}
-
-.service-price {
-    font-size: 22px;
-    font-weight: 700;
+.carousel-price {
     color: #00bcd4;
-    margin-bottom: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
-.btn-action {
-    width: 100%;
-    padding: 14px;
-    background: #00bcd4;
+.carousel-card-btn {
+    margin-top: auto;
+    align-self: center;
+    background: #131414;
     color: white;
     border: none;
-    border-radius: 8px;
-    font-size: 16px;
+    padding: 9px 22px;
+    border-radius: 6px;
+    font-size: 13.5px;
     cursor: pointer;
-    margin-top: auto;
-    transition: background 0.3s;
 }
 
-.btn-action:hover {
-    background: #0097a7;
+.carousel-card-btn:hover {
+    background: #00bcd4;
 }
 
-/* ===================== FIXED BUTTONS ===================== */
-.back-to-top {
+/* ===================== BACK TO TOP & CALL BUTTON ===================== */
+.back-to-top, .call-button {
     position: fixed;
-    bottom: 90px;
     right: 20px;
-    width: 55px;
-    height: 55px;
     background: #00bcd4;
     color: white;
     border: none;
     border-radius: 50%;
-    font-size: 24px;
     cursor: pointer;
-    display: none;
-    align-items: center;
-    justify-content: center;
     box-shadow: 0 4px 12px rgba(0, 188, 212, 0.4);
+    transition: all 0.3s;
     z-index: 99;
 }
 
-.back-to-top.show {
-    display: flex;
+.back-to-top {
+    bottom: 90px;
+    width: 52px;
+    height: 52px;
+    font-size: 26px;
 }
 
 .call-button {
-    position: fixed;
     bottom: 20px;
-    right: 20px;
     width: 60px;
     height: 60px;
-    background: #00bcd4;
-    color: white;
-    border: none;
-    border-radius: 50%;
     font-size: 28px;
+    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 188, 212, 0.4);
+}
+
+.back-to-top:hover, .call-button:hover {
+    background: #0097a7;
+    transform: scale(1.08);
+}
+
+/* ===================== FOOTER ===================== */
+.footer {
+    background: #0a0e27;
+    color: white;
+    padding: 70px 20px 40px;
+    margin-top: 80px;
+}
+
+.footer-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
+}
+
+.footer-title {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 22px;
+    color: #ffffff;
+    border-bottom: 2px solid #00bcd4;
+    padding-bottom: 10px;
+}
+
+.footer-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-list a {
+    color: rgba(255, 255, 255, 0.85);
     text-decoration: none;
-    z-index: 98;
+    transition: all 0.3s;
+}
+
+.footer-list a:hover {
+    color: #00bcd4;
+    padding-left: 4px;
 }
 
 /* ===================== RESPONSIVE ===================== */
+@media (max-width: 992px) {
+    .nav-bar_logo { margin-left: 20px; }
+    .nav-bar_right { margin-right: 20px; }
+}
+
 @media (max-width: 768px) {
-    .services-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .hamburger-menu { display: flex; }
+    .nav-bar_menu {
+        position: absolute;
+        top: 70px;
+        right: 15px;
+        flex-direction: column;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        display: none;
+        gap: 15px;
+        min-width: 220px;
     }
-    
-    .filter-container {
-        padding: 0 15px;
-    }
+    .nav-bar_menu.show { display: flex; }
+
+    .slider { height: 320px; }
+    .slider img { width: 92%; border-radius: 12px; }
+
+    .form_input { flex-direction: column; }
+    .form_input input { min-width: 100%; }
 }
 
 @media (max-width: 480px) {
-    .page-header h1 {
-        font-size: 26px;
-    }
+    .nav-bar_logo { font-size: 20pt; }
+    .slider { height: 240px; }
+    .home_form { padding: 20px 15px; margin: 20px auto; }
+}
+
+/* Responsive cho carousel */
+@media (max-width: 1024px) {
+    .carousel-item { flex: 0 0 calc(33.33% - 15px); }
+}
+
+@media (max-width: 768px) {
+    .carousel-item { flex: 0 0 calc(50% - 10px); }
+    .carousel-wrapper { margin: 0 45px; }
+}
+
+@media (max-width: 480px) {
+    .carousel-item { flex: 0 0 100%; }
+    .carousel-wrapper { margin: 0 35px; }
+}
+
+/* Footer responsive */
+@media (max-width: 1024px) {
+    .footer-container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+    .footer-container { grid-template-columns: 1fr; gap: 40px; }
 }
