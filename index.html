@@ -80,7 +80,7 @@
                 for (const service of result.data) {
                     const phuongtiens = await getPhuongTien(service.id);
 
-                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%; height:280px; object-fit:cover;">`;
+                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
 
                     if (phuongtiens.length > 0) {
                         phuongtiens.sort((a, b) => (a.thutu || 999) - (b.thutu || 999));
@@ -88,9 +88,9 @@
 
                         if (first.link) {
                             if (first.loai === "VIDEO") {
-                                mediaHTML = `<video src="${first.link}" controls style="width:100%; height:280px; object-fit:cover;"></video>`;
+                                mediaHTML = `<video src="${first.link}" controls style="width:100%; height:260px; object-fit:cover;"></video>`;
                             } else {
-                                mediaHTML = `<img src="${first.link}" alt="${service.tendichvu}" style="width:100%; height:280px; object-fit:cover;">`;
+                                mediaHTML = `<img src="${first.link}" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
                             }
                         }
                     }

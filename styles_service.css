@@ -245,3 +245,71 @@ body {
         height: 240px;
     }
 }
+
+/* ===================== SERVICE CARD - ẢNH CHỮ NHẬT DỌC ===================== */
+.service-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.4s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.service-card img,
+.service-card video {
+    width: 100%;
+    height: 260px;           /* Chiều cao ảnh vừa phải, không bị cắt */
+    object-fit: cover;
+    display: block;
+}
+
+.service-info {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-info h3 {
+    color: #0e3a80;
+    font-size: 19px;
+    margin-bottom: 8px;
+}
+
+.service-desc {
+    color: #666;
+    font-size: 14.5px;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.service-price {
+    font-size: 22px;
+    font-weight: 700;
+    color: #00bcd4;
+    margin-bottom: 18px;
+}
+
+.btn-action {
+    width: 100%;
+    padding: 13px;
+    background: #00bcd4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+.btn-action:hover {
+    background: #0097a7;
+}
