@@ -62,7 +62,7 @@ body {
     background: #0097a7;
 }
 
-/* Hamburger */
+/* Hamburger Menu */
 .hamburger-menu {
     display: none;
     flex-direction: column;
@@ -106,11 +106,11 @@ body {
 
 .services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
     gap: 30px;
 }
 
-/* ===================== CARD - ẢNH CHỮ NHẬT DỌC ===================== */
+/* ===================== SERVICE CARD ===================== */
 .service-card {
     background: white;
     border-radius: 16px;
@@ -123,16 +123,18 @@ body {
 }
 
 .service-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.15);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* Ảnh chữ nhật dọc - cao hơn */
+/* ===================== ẢNH GIỮ NGUYÊN TỶ LỆ GỐC ===================== */
 .service-card img,
 .service-card video {
     width: 100%;
-    height: 320px;           /* ← Tăng chiều cao ảnh */
-    object-fit: cover;
+    height: auto;           /* Quan trọng: giữ nguyên tỷ lệ gốc */
+    max-height: 320px;      /* Giới hạn chiều cao tối đa để không quá dài */
+    object-fit: contain;    /* Giữ nguyên tỷ lệ, không bị cắt */
+    background: #f8f9fa;
     display: block;
 }
 
@@ -222,7 +224,7 @@ body {
     z-index: 98;
 }
 
-/* ===================== RESPONSIVE ===================== */
+/* Responsive */
 @media (max-width: 768px) {
     .services-grid {
         grid-template-columns: 1fr;
@@ -231,7 +233,7 @@ body {
     
     .service-card img,
     .service-card video {
-        height: 260px;
+        max-height: 280px;
     }
 }
 
@@ -239,77 +241,4 @@ body {
     .page-header h1 {
         font-size: 26px;
     }
-    
-    .service-card img,
-    .service-card video {
-        height: 240px;
-    }
-}
-
-/* ===================== SERVICE CARD - ẢNH CHỮ NHẬT DỌC ===================== */
-.service-card {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.service-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-}
-
-.service-card img,
-.service-card video {
-    width: 100%;
-    height: 260px;           /* Chiều cao ảnh vừa phải, không bị cắt */
-    object-fit: cover;
-    display: block;
-}
-
-.service-info {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.service-info h3 {
-    color: #0e3a80;
-    font-size: 19px;
-    margin-bottom: 8px;
-}
-
-.service-desc {
-    color: #666;
-    font-size: 14.5px;
-    margin-bottom: 15px;
-    flex: 1;
-}
-
-.service-price {
-    font-size: 22px;
-    font-weight: 700;
-    color: #00bcd4;
-    margin-bottom: 18px;
-}
-
-.btn-action {
-    width: 100%;
-    padding: 13px;
-    background: #00bcd4;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: auto;
-}
-
-.btn-action:hover {
-    background: #0097a7;
 }
