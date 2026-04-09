@@ -52,7 +52,6 @@
     <script>
         const API_BASE_URL = "https://webdatlichlamtoc.id.vn";
 
-        // Lấy danh sách ảnh/video của một dịch vụ
         async function getPhuongTien(id_dich_vu) {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/phuong-tiens/${id_dich_vu}`);
@@ -60,7 +59,6 @@
                 const data = await res.json();
                 return Array.isArray(data) ? data : (data.data || []);
             } catch (e) {
-                console.error("Lỗi lấy phuong-tiens:", e);
                 return [];
             }
         }
@@ -75,28 +73,24 @@
 
                 loading.style.display = 'none';
 
-                if (!result.status || !result.data) {
-                    grid.innerHTML = `<p style="color:red;text-align:center;padding:60px;">Không tải được dữ liệu dịch vụ</p>`;
-                    return;
-                }
+                if (!result.status || !result.data) return;
 
                 grid.innerHTML = '';
 
                 for (const service of result.data) {
                     const phuongtiens = await getPhuongTien(service.id);
 
-                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%; height:230px; object-fit:cover;">`;
+                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
 
                     if (phuongtiens.length > 0) {
-                        // Sắp xếp theo thutu
                         phuongtiens.sort((a, b) => (a.thutu || 999) - (b.thutu || 999));
-
                         const first = phuongtiens[0];
+
                         if (first.link) {
                             if (first.loai === "VIDEO") {
-                                mediaHTML = `<video src="${first.link}" controls style="width:100%; height:230px; object-fit:cover;"></video>`;
+                                mediaHTML = `<video src="${first.link}" controls style="width:100%; height:260px; object-fit:cover;"></video>`;
                             } else {
-                                mediaHTML = `<img src="${first.link}" alt="${service.tendichvu}" style="width:100%; height:230px; object-fit:cover;">`;
+                                mediaHTML = `<img src="${first.link}" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
                             }
                         }
                     }
@@ -114,26 +108,21 @@
                     `;
                     grid.insertAdjacentHTML('beforeend', html);
                 }
-
-            } catch (error) {
-                console.error(error);
+            } catch (err) {
                 loading.innerHTML = `<span style="color:red;">Không kết nối được với server</span>`;
             }
         }
 
         window.datLich = function(id) {
-            alert(`Đã chọn dịch vụ ID: ${id}\nTính năng đặt lịch đang phát triển.`);
+            alert(`Đã chọn dịch vụ ID: ${id}`);
         };
 
-        // Khởi chạy trang
         document.addEventListener('DOMContentLoaded', () => {
             loadServices();
 
-            const hamburger = document.getElementById('hamburgerMenu');
+            const ham = document.getElementById('hamburgerMenu');
             const menu = document.getElementById('navMenu');
-            if (hamburger) {
-                hamburger.addEventListener('click', () => menu.classList.toggle('show'));
-            }
+            if (ham) ham.addEventListener('click', () => menu.classList.toggle('show'));
         });
     </script>
 </body>
