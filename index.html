@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dịch vụ - FORMAN</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Dịch vụ - FORMAN Cắt tóc nam</title>
+    <link rel="stylesheet" href="styles_service.css">
 </head>
 <body>
 
+    <!-- Nav Bar -->
     <div class="nav-bar">
         <div class="nav-bar_left">
             <div class="nav-bar_logo">FORMAN</div>
@@ -41,7 +42,7 @@
 
     <section class="services-section">
         <div class="services-grid" id="servicesGrid">
-            <div id="loading">Đang tải dịch vụ và hình ảnh từ server...</div>
+            <div id="loading">Đang tải dịch vụ và hình ảnh...</div>
         </div>
     </section>
 
@@ -58,7 +59,6 @@
                 const data = await res.json();
                 return Array.isArray(data) ? data : (data.data || []);
             } catch (e) {
-                console.error("Lỗi lấy phuong-tiens:", e);
                 return [];
             }
         }
@@ -73,8 +73,8 @@
 
                 loading.style.display = 'none';
 
-                if (!result.status || !result.data || result.data.length === 0) {
-                    grid.innerHTML = `<p style="color:red; text-align:center; padding:40px;">Không có dữ liệu dịch vụ</p>`;
+                if (!result.status || !result.data) {
+                    grid.innerHTML = `<p style="color:red;text-align:center;padding:60px;">Không tải được dữ liệu</p>`;
                     return;
                 }
 
@@ -83,52 +83,46 @@
                 for (const service of result.data) {
                     const phuongtiens = await getPhuongTien(service.id);
 
-                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%; height:230px; object-fit:cover;">`;
+                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%;height:230px;object-fit:cover;">`;
 
                     if (phuongtiens.length > 0) {
-                        // Sắp xếp theo thutu
-                        phuongtiens.sort((a, b) => (a.thutu || 999) - (b.thutu || 999));
-
+                        phuongtiens.sort((a,b) => (a.thutu || 999) - (b.thutu || 999));
                         const first = phuongtiens[0];
                         if (first.url) {
-                            if (first.loai === 'video' || first.url.endsWith('.mp4')) {
-                                mediaHTML = `<video src="${first.url}" controls style="width:100%; height:230px; object-fit:cover;"></video>`;
-                            } else {
-                                mediaHTML = `<img src="${first.url}" alt="${service.tendichvu}" style="width:100%; height:230px; object-fit:cover;">`;
-                            }
+                            mediaHTML = first.loai === 'video' 
+                                ? `<video src="${first.url}" controls style="width:100%;height:230px;object-fit:cover;"></video>`
+                                : `<img src="${first.url}" alt="${service.tendichvu}" style="width:100%;height:230px;object-fit:cover;">`;
                         }
                     }
 
-                    const cardHTML = `
+                    const html = `
                         <div class="service-card">
                             ${mediaHTML}
                             <div class="service-info">
                                 <h3>${service.tendichvu}</h3>
-                                <p class="service-desc">${service.mota || 'Đang cập nhật...'}</p>
+                                <p class="service-desc">${service.mota || 'Đang cập nhật mô tả...'}</p>
                                 <p class="service-price">${Number(service.dongia).toLocaleString('vi-VN')} VND</p>
                                 <button class="btn-action" onclick="datLich('${service.id}')">Đặt lịch ngay</button>
                             </div>
                         </div>
                     `;
-                    grid.insertAdjacentHTML('beforeend', cardHTML);
+                    grid.insertAdjacentHTML('beforeend', html);
                 }
-
-            } catch (error) {
-                console.error(error);
-                loading.innerHTML = `<span style="color:red;">Không thể kết nối với server. Vui lòng kiểm tra backend.</span>`;
+            } catch (err) {
+                loading.innerHTML = `<span style="color:red;">Không kết nối được với server</span>`;
             }
         }
 
         window.datLich = function(id) {
-            alert(`Đã chọn dịch vụ ID: ${id}\nTính năng đặt lịch đang phát triển.`);
+            alert(`Đã chọn dịch vụ ID: ${id}`);
         };
 
         document.addEventListener('DOMContentLoaded', () => {
             loadServices();
 
-            const hamburger = document.getElementById('hamburgerMenu');
+            const ham = document.getElementById('hamburgerMenu');
             const menu = document.getElementById('navMenu');
-            if (hamburger) hamburger.addEventListener('click', () => menu.classList.toggle('show'));
+            if (ham) ham.addEventListener('click', () => menu.classList.toggle('show'));
         });
     </script>
 </body>
