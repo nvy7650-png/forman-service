@@ -99,6 +99,39 @@ body {
     opacity: 0.95;
 }
 
+/* ===================== FILTER SECTION (TẤT CẢ DỊCH VỤ) ===================== */
+.filter-section {
+    background: white;
+    padding: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 10px;
+}
+
+.filter-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.filter-btn {
+    background: #f1f1f1;
+    color: #555;
+    border: none;
+    padding: 10px 24px;
+    margin: 0 8px;
+    border-radius: 30px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #00bcd4;
+    color: white;
+}
+
 /* ===================== SERVICES SECTION ===================== */
 .services-section {
     max-width: 1200px;
@@ -129,29 +162,27 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* ===================== MEDIA (ẢNH & VIDEO) - PHẦN ĐÃ CHỈNH ===================== */
+/* ===================== MEDIA WRAPPER ===================== */
 .service-card .media-wrapper {
     width: 100%;
-    aspect-ratio: 16 / 9;           /* Thay đổi tỷ lệ ở đây nếu cần: 1/1, 4/3, 16/10... */
+    aspect-ratio: 16 / 9;           /* Bạn có thể đổi thành 4/3 hoặc 1/1 nếu muốn */
     background: #f8f9fa;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    position: relative;
 }
 
 .service-card img,
 .service-card video {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;              /* Thay đổi thành cover để đẹp và đầy khung */
     object-position: center;
     display: block;
 }
 
 /* ===================== SERVICE INFO ===================== */
 .service-info {
-    padding: 20px;
+    padding: 24px 20px;
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -160,13 +191,13 @@ body {
 .service-info h3 {
     color: #0e3a80;
     font-size: 19px;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .service-desc {
     color: #666;
-    font-size: 14.5px;
-    margin-bottom: 15px;
+    font-size: 14.8px;
+    margin-bottom: 16px;
     flex: 1;
 }
 
@@ -174,12 +205,12 @@ body {
     font-size: 22px;
     font-weight: 700;
     color: #00bcd4;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
 
 .btn-action {
     width: 100%;
-    padding: 13px;
+    padding: 14px;
     background: #00bcd4;
     color: white;
     border: none;
@@ -242,6 +273,10 @@ body {
     .services-grid {
         grid-template-columns: 1fr;
         gap: 20px;
+    }
+    
+    .filter-container {
+        padding: 0 15px;
     }
 }
 
