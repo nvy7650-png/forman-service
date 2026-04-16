@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- Nav Bar (giữ nguyên như cũ) -->
+    <!-- Nav Bar -->
     <div class="nav-bar">
         <div class="nav-bar_left">
             <div class="nav-bar_logo">FORMAN</div>
@@ -52,7 +52,6 @@
         let allCategories = [];
         let currentFilter = 'all';
 
-        // Lấy danh sách loại dịch vụ
         async function loadCategories() {
             try {
                 const res = await fetch(`${API_BASE_URL}/api/types`);
@@ -109,7 +108,7 @@
             const grid = document.getElementById('servicesGrid');
 
             try {
-                await loadCategories();   // Lấy loại trước
+                await loadCategories();
 
                 const res = await fetch(`${API_BASE_URL}/api/services`);
                 const result = await res.json();
@@ -167,8 +166,10 @@
                             <div class="button-group">
                                 <a href="https://giaodiendatlich.vercel.app/?service=${service.id}" 
                                    class="btn-action btn-datlich">Đặt lịch ngay</a>
-                                <a href="chi-tiet-dich-vu.html?id=${service.id}" 
-                                   class="btn-action btn-chitiet">Chi tiết</a>
+                                <!-- Link Chi tiết đã sửa theo yêu cầu -->
+                                <a href="https://forman-detail-services.vercel.app/?id=${service.id}" 
+                                   class="btn-action btn-chitiet" 
+                                   target="_blank">Chi tiết</a>
                             </div>
                         </div>
                     </div>
@@ -182,7 +183,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadServices();
 
-            // Hamburger menu
             const ham = document.getElementById('hamburgerMenu');
             const menu = document.getElementById('navMenu');
             ham.addEventListener('click', () => {
@@ -190,7 +190,6 @@
                 ham.classList.toggle('active');
             });
 
-            // Back to top
             const backToTop = document.getElementById('backToTop');
             window.addEventListener('scroll', () => {
                 backToTop.classList.toggle('show', window.scrollY > 500);
@@ -201,9 +200,58 @@
         });
     </script>
 
-    <!-- Footer giữ nguyên như cũ của bạn -->
+    <!-- Footer -->
     <footer class="footer">
-        <!-- ... nội dung footer ... -->
+        <div class="footer-container">
+            <div class="footer-column">
+                <div class="footer-title">Về chúng tôi</div>
+                <ul class="footer-list">
+                    <li><a href="https://datlichlamtoc.id.vn/about.html">Giới thiệu về FORMAN</a></li>
+                    <li><a href="#">Tin tức</a></li>
+                    <li><a href="#">Tìm FORMAN gần nhất</a></li>
+                    <li><a href="#">Blog chăm sóc tóc</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <div class="footer-title">Liên hệ</div>
+                <ul class="footer-list">
+                    <li class="contact-info">
+                        <span class="label">Hotline:</span>
+                        <a href="tel:1900272703">1900.27.27.03</a>
+                    </li>
+                    <li class="contact-info">
+                        <span class="label">Email:</span>
+                        <a href="mailto:formanvn@gmail.com">formanvn@gmail.com</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <div class="footer-title">Thông tin</div>
+                <ul class="footer-list">
+                    <li class="contact-info">
+                        <span class="label">Giờ phục vụ:</span>
+                        <span>Thứ 2 - Chủ Nhật, 8h30 - 20h30</span>
+                    </li>
+                    <li><a href="#">Chính sách bảo mật</a></li>
+                    <li><a href="#">Điều kiện giao dịch chung</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <div class="payment-section">
+                    <p class="payment-title">Hình thức thanh toán</p>
+                    <div class="payment-icons">
+                        <img src="image/money.png" alt="Tiền mặt" class="payment-icon">
+                        <img src="image/qr.jpg" alt="Chuyển khoản" class="payment-icon">
+                        <img src="image/apple_pay.jpg" alt="Apple Pay" class="payment-icon">
+                        <img src="image/visa.jpg" alt="Visa" class="payment-icon">
+                        <img src="image/mastercard.jpg" alt="Mastercard" class="payment-icon">
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
 </body>
