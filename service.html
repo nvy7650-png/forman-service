@@ -166,10 +166,8 @@
                             <div class="button-group">
                                 <a href="https://giaodiendatlich.vercel.app/?service=${service.id}" 
                                    class="btn-action btn-datlich">Đặt lịch ngay</a>
-                                <!-- Link Chi tiết đã sửa theo yêu cầu -->
                                 <a href="https://forman-detail-services.vercel.app/?id=${service.id}" 
-                                   class="btn-action btn-chitiet" 
-                                   target="_blank">Chi tiết</a>
+                                   class="btn-action btn-chitiet">Chi tiết</a>
                             </div>
                         </div>
                     </div>
@@ -179,7 +177,6 @@
             }
         }
 
-        // Khởi chạy trang
         document.addEventListener('DOMContentLoaded', () => {
             loadServices();
 
