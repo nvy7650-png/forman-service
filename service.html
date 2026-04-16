@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <!-- Nav Bar -->
+    <!-- Nav Bar (giữ nguyên) -->
     <div class="nav-bar">
         <div class="nav-bar_left">
             <div class="nav-bar_logo">FORMAN</div>
@@ -22,7 +22,7 @@
                 <a href="#" class="active">Dịch vụ</a>
                 <a href="https://giaodiendatlich.vercel.app/">Khuyến mãi</a>
                 <a href="https://datlichlamtoc.id.vn/about.html">Về chúng tôi</a>
-               <div class="form_button">
+                <div class="form_button">
                     <a href="https://tranthitrucly.io.vn/loginuser" class="btn-action">Đăng nhập</a>
                 </div>
             </div>
@@ -34,9 +34,10 @@
         <p>Chuyên cắt tóc nam - Uốn - Nhuộm - Chăm sóc tóc cao cấp</p>
     </div>
 
+    <!-- Bộ lọc dịch vụ -->
     <div class="filter-section">
-        <div class="filter-container">
-            <button class="filter-btn active">Tất cả dịch vụ</button>
+        <div class="filter-container" id="filterContainer">
+            <!-- JavaScript sẽ tạo các nút lọc -->
         </div>
     </div>
 
@@ -51,6 +52,18 @@
 
     <script>
         const API_BASE_URL = "https://webdatlichlamtoc.id.vn";
+        let allServices = [];
+        let currentFilter = 'all';
+
+        // Danh sách loại dịch vụ (có thể chỉnh sửa hoặc lấy từ API sau)
+        const serviceCategories = [
+            { id: 'all', name: 'Tất cả dịch vụ' },
+            { id: 'cat-toc', name: 'Cắt tóc' },
+            { id: 'uon-toc', name: 'Uốn tóc' },
+            { id: 'nhuom-toc', name: 'Nhuộm tóc' },
+            { id: 'cham-soc', name: 'Chăm sóc tóc' },
+            { id: 'combo', name: 'Combo dịch vụ' }
+        ];
 
         async function getPhuongTien(id_dich_vu) {
             try {
@@ -63,6 +76,33 @@
             }
         }
 
+        function createFilterButtons() {
+            const container = document.getElementById('filterContainer');
+            container.innerHTML = '';
+
+            serviceCategories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = `filter-btn ${cat.id === currentFilter ? 'active' : ''}`;
+                btn.textContent = cat.name;
+                btn.addEventListener('click', () => filterServices(cat.id));
+                container.appendChild(btn);
+            });
+        }
+
+        function filterServices(category) {
+            currentFilter = category;
+            createFilterButtons();
+
+            const filtered = category === 'all' 
+                ? allServices 
+                : allServices.filter(s => 
+                    (s.loaidichvu && s.loaidichvu.toLowerCase() === category) ||
+                    (s.tendichvu && s.tendichvu.toLowerCase().includes(category.replace('-', ' ')))
+                );
+
+            renderServices(filtered);
+        }
+
         async function loadServices() {
             const loading = document.getElementById('loading');
             const grid = document.getElementById('servicesGrid');
@@ -73,62 +113,101 @@
 
                 loading.style.display = 'none';
 
-                if (!result.status || !result.data) return;
-
-                grid.innerHTML = '';
-
-                for (const service of result.data) {
-                    const phuongtiens = await getPhuongTien(service.id);
-
-                    let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
-
-                    if (phuongtiens.length > 0) {
-                        phuongtiens.sort((a, b) => (a.thutu || 999) - (b.thutu || 999));
-                        const first = phuongtiens[0];
-
-                        if (first.link) {
-                            if (first.loai === "VIDEO") {
-                                mediaHTML = `<video src="${first.link}" controls style="width:100%; height:260px; object-fit:cover;"></video>`;
-                            } else {
-                                mediaHTML = `<img src="${first.link}" alt="${service.tendichvu}" style="width:100%; height:260px; object-fit:cover;">`;
-                            }
-                        }
-                    }
-
-                    const html = `
-                        <div class="service-card">
-                            ${mediaHTML}
-                            <div class="service-info">
-                                <h3>${service.tendichvu}</h3>
-                                <p class="service-desc">${service.mota || 'Đang cập nhật...'}</p>
-                                <p class="service-price">${Number(service.dongia).toLocaleString('vi-VN')} VND</p>
-                                <button class="btn-action" onclick="datLich('${service.id}')">Đặt lịch ngay</button>
-                            </div>
-                        </div>
-                    `;
-                    grid.insertAdjacentHTML('beforeend', html);
+                if (!result.status || !result.data) {
+                    grid.innerHTML = `<p style="color:red; text-align:center; padding:40px;">Không tải được dữ liệu dịch vụ.</p>`;
+                    return;
                 }
+
+                allServices = result.data;
+                createFilterButtons();
+                renderServices(allServices);
+
             } catch (err) {
-                loading.innerHTML = `<span style="color:red;">Không kết nối được với server</span>`;
+                loading.innerHTML = `<span style="color:red;">Không kết nối được với server. Vui lòng thử lại sau.</span>`;
             }
         }
 
-        window.datLich = function(id) {
-            alert(`Đã chọn dịch vụ ID: ${id}`);
-        };
+        async function renderServices(services) {
+            const grid = document.getElementById('servicesGrid');
+            grid.innerHTML = '';
 
+            if (services.length === 0) {
+                grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; padding:60px; color:#666;">Không tìm thấy dịch vụ nào phù hợp.</p>`;
+                return;
+            }
+
+            for (const service of services) {
+                const phuongtiens = await getPhuongTien(service.id);
+
+                let mediaHTML = `<img src="image/b1.jpg" alt="${service.tendichvu}" class="service-image">`;
+
+                if (phuongtiens.length > 0) {
+                    phuongtiens.sort((a, b) => (a.thutu || 999) - (b.thutu || 999));
+                    const first = phuongtiens[0];
+
+                    if (first.link) {
+                        if (first.loai === "VIDEO") {
+                            mediaHTML = `<video src="${first.link}" controls muted class="service-image"></video>`;
+                        } else {
+                            mediaHTML = `<img src="${first.link}" alt="${service.tendichvu}" class="service-image">`;
+                        }
+                    }
+                }
+
+                const html = `
+                    <div class="service-card">
+                        ${mediaHTML}
+                        <div class="service-info">
+                            <h3>${service.tendichvu}</h3>
+                            <p class="service-desc">${service.mota || 'Đang cập nhật mô tả...'}</p>
+                            <p class="service-price">${Number(service.dongia || 0).toLocaleString('vi-VN')} VND</p>
+                            
+                            <div class="button-group">
+                                <a href="https://giaodiendatlich.vercel.app/?service=${service.id}" 
+                                   class="btn-action btn-datlich">Đặt lịch ngay</a>
+                                <a href="chi-tiet-dich-vu.html?id=${service.id}" 
+                                   class="btn-action btn-chitiet">Chi tiết</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                grid.insertAdjacentHTML('beforeend', html);
+            }
+        }
+
+        // Khởi tạo
         document.addEventListener('DOMContentLoaded', () => {
             loadServices();
 
+            // Hamburger menu
             const ham = document.getElementById('hamburgerMenu');
             const menu = document.getElementById('navMenu');
-            if (ham) ham.addEventListener('click', () => menu.classList.toggle('show'));
+            ham.addEventListener('click', () => {
+                menu.classList.toggle('show');
+                ham.classList.toggle('active');
+            });
+
+            // Back to top
+            const backToTop = document.getElementById('backToTop');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 500) {
+                    backToTop.classList.add('show');
+                } else {
+                    backToTop.classList.remove('show');
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
         });
     </script>
 
+    <!-- Footer (giữ nguyên như cũ) -->
     <footer class="footer">
+        <!-- Nội dung footer của bạn (copy nguyên từ file cũ) -->
         <div class="footer-container">
-
             <div class="footer-column">
                 <div class="footer-title">Về chúng tôi</div>
                 <ul class="footer-list">
@@ -138,7 +217,6 @@
                     <li><a href="#">Blog chăm sóc tóc</a></li>
                 </ul>
             </div>
-
 
             <div class="footer-column">
                 <div class="footer-title">Liên hệ</div>
@@ -154,7 +232,6 @@
                 </ul>
             </div>
 
-
             <div class="footer-column">
                 <div class="footer-title">Thông tin</div>
                 <ul class="footer-list">
@@ -166,8 +243,6 @@
                     <li><a href="#">Điều kiện giao dịch chung</a></li>
                 </ul>
             </div>
-
-
 
             <div class="footer-column">
                 <div class="payment-section">
@@ -182,9 +257,6 @@
                 </div>
             </div>
         </div>
-        </div>
-
-
     </footer>
 
 </body>
